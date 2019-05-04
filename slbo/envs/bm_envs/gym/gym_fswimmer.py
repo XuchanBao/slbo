@@ -40,6 +40,15 @@ class fixedSwimmerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         qvel = self.model.data.qvel
         return np.concatenate([qpos.flat[2:], qvel.flat, self.pos_diff.flat])
 
+    def mb_step(self, states, actions, next_states):
+        # returns rewards and dones
+        # forward rewards are calculated based on states, instead of next_states as in original SLBO envs
+        if getattr(self, 'action_space', None):
+            actions = np.clip(actions, self.action_space.low,
+                              self.action_space.high)
+        rewards = - self.cost_np_vec(states, actions, next_states)
+        return rewards, np.zeros_like(rewards, dtype=np.bool)
+
     def reset_model(self):
         self.set_state(
             self.init_qpos + self.np_random.uniform(low=-.1, high=.1, size=self.model.nq),

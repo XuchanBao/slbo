@@ -6,6 +6,7 @@ from slbo.envs.bm_envs.gym.walker2d import Walker2dEnv
 from slbo.envs.bm_envs.gym.ant import AntEnv
 from slbo.envs.bm_envs.gym.hopper import HopperEnv
 from slbo.envs.bm_envs.gym.swimmer import SwimmerEnv
+from slbo.envs.bm_envs.gym.gym_fswimmer import fixedSwimmerEnv
 from slbo.envs.bm_envs.gym.reacher import ReacherEnv
 from slbo.envs.bm_envs.gym.pendulum import PendulumEnv
 from slbo.envs.bm_envs.gym.inverted_pendulum import InvertedPendulumEnv
@@ -21,6 +22,7 @@ def make_env(id: str):
         'Ant': AntEnv,
         'Hopper': HopperEnv,
         'Swimmer': SwimmerEnv,
+        'FixedSwimmer': fixedSwimmerEnv,
         'Reacher': ReacherEnv,
         'Pendulum': PendulumEnv,
         'InvertedPendulum': InvertedPendulumEnv,
