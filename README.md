@@ -5,13 +5,13 @@ Algorithmic Framework for Model-based Deep Reinforcement Learning with Theoretic
 A PyTorch version will be released later.  
 
 
-## Requirements
-1. OpenAI Baselines
-2. rllab (commit number `b3a2899`)
-3. MuJoCo (1.5)
-4. TensorFlow (>= 1.9)
-5. NumPy (>= 1.14.5)
-6. Python 3.6
+## Installation
+Requires [`mujoco131`](https://www.roboti.us/index.html).
+
+Install required packages using:
+```
+pip install -r requirements.txt
+```
 
 ## Run
 
@@ -19,6 +19,23 @@ Before running, please make sure that `rllab` and `baselines` are available
 
 ```bash
 python main.py -c configs/algos/slbo.yml configs/envs/half_cheetah.yml -s log_dir=/tmp
+```
+Environments are modified to use the gym environments for the benchmarking project. Supported environments are:
+```
+Environment         |   Max timesteps
+---------------------------------------
+reacher             |   50
+half_cheetah        |   1000
+walker              |   1000
+hopper              |   1000
+swimmer             |   1000
+ant                 |   1000
+                    |
+pendulum            |   200
+inverted_pendulum   |   100
+acrobot             |   200
+cartpole            |   200
+mountain            |   200
 ```
 
 If you want to change hyper-parameters, you can either modify a corresponding `yml` file or 
