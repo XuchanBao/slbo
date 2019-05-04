@@ -37,7 +37,8 @@ class VirtualEnv(BaseBatchedEnv):
             actions = actions[..., :self._env.action_space.shape[0]]
 
         next_states = self._model.eval('next_states', states=self._states, actions=actions)
-        rewards, dones = self._env.mb_step(self._states, self._scale_action(actions), next_states)
+        # Action clipping will be done in the environment
+        rewards, dones = self._env.mb_step(self._states, actions, next_states)
 
         self._states = next_states
         return self._states.copy(), rewards, dones, [{} for _ in range(self.n_envs)]
