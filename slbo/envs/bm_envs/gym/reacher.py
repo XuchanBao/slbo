@@ -1,9 +1,10 @@
 import numpy as np
 from gym import utils
 from gym.envs.mujoco import mujoco_env
+from slbo.envs import BaseModelBasedEnv
 
 
-class ReacherEnv(mujoco_env.MujocoEnv, utils.EzPickle):
+class ReacherEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
 
     def __init__(self):
         utils.EzPickle.__init__(self)

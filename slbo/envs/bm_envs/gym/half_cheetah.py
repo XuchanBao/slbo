@@ -7,9 +7,10 @@ import os
 import numpy as np
 from gym import utils
 from gym.envs.mujoco import mujoco_env
+from slbo.envs import BaseModelBasedEnv
 
 
-class HalfCheetahEnv(mujoco_env.MujocoEnv, utils.EzPickle):
+class HalfCheetahEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
 
     def __init__(self, frame_skip=5):
         self.prev_qpos = None
