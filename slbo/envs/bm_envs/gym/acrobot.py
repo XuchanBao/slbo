@@ -3,6 +3,9 @@ from gym import core, spaces
 from gym.utils import seeding
 import numpy as np
 from numpy import sin, cos, pi
+from slbo.utils.dataset import Dataset, gen_dtype
+from lunzi.Logger import logger
+
 
 __copyright__ = "Copyright 2013, RLPy http://acl.mit.edu/RLPy"
 __credits__ = ["Alborz Geramifard", "Robert H. Klein", "Christoph Dann",
@@ -239,6 +242,26 @@ class AcrobotEnv(core.Env):
         h1 = obs[:, 0]  # Height of first arm
         h2 = obs[:, 0] * obs[:, 2] - obs[:, 1] * obs[:, 3]  # Height of second arm
         return (h1 + h2)
+
+    def verify(self, n=2000, eps=1e-4):
+        dataset = Dataset(gen_dtype(self, 'state action next_state reward done'), n)
+        state = self.reset()
+        for _ in range(n):
+            action = self.action_space.sample()
+            next_state, reward, done, _ = self.step(action)
+            dataset.append((state, action, next_state, reward, done))
+
+            state = next_state
+            if done:
+                state = self.reset()
+
+        rewards_, dones_ = self.mb_step(dataset.state, dataset.action, dataset.next_state)
+        diff = dataset.reward - rewards_
+        l_inf = np.abs(diff).max()
+        logger.info('rewarder difference: %.6f', l_inf)
+
+        assert np.allclose(dones_, dataset.done)
+        assert l_inf < eps
 
 
 def wrap(x, m, M):

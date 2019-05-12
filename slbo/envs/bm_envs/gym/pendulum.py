@@ -3,6 +3,8 @@ from gym import spaces
 from gym.utils import seeding
 import numpy as np
 from os import path
+from slbo.utils.dataset import Dataset, gen_dtype
+from lunzi.Logger import logger
 
 
 class PendulumEnv(gym.Env):
@@ -127,6 +129,26 @@ class PendulumEnv(gym.Env):
         u = np.clip(acts[:, 0], -self.max_torque, self.max_torque)
         costs = y + .1 * x + .1 * (thetadot ** 2) + .001 * (u ** 2)
         return costs
+
+    def verify(self, n=2000, eps=1e-4):
+        dataset = Dataset(gen_dtype(self, 'state action next_state reward done'), n)
+        state = self.reset()
+        for _ in range(n):
+            action = self.action_space.sample()
+            next_state, reward, done, _ = self.step(action)
+            dataset.append((state, action, next_state, reward, done))
+
+            state = next_state
+            if done:
+                state = self.reset()
+
+        rewards_, dones_ = self.mb_step(dataset.state, dataset.action, dataset.next_state)
+        diff = dataset.reward - rewards_
+        l_inf = np.abs(diff).max()
+        logger.info('rewarder difference: %.6f', l_inf)
+
+        assert np.allclose(dones_, dataset.done)
+        assert l_inf < eps
 
 
 def angle_normalize(x):
