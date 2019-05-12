@@ -53,7 +53,7 @@ def main():
     dim_state = int(np.prod(env.observation_space.shape))
     dim_action = int(np.prod(env.action_space.shape))
 
-    env.verify(n=50)
+    env.verify()
 
     normalizers = Normalizers(dim_action=dim_action, dim_state=dim_state)
 
