@@ -150,6 +150,21 @@ register(
     entry_point='envs.gym.gym_fswimmer:fixedSwimmerEnv',
     max_episode_steps=1000,
 )
+register(
+    id="gym_humanoid-v0",
+    entry_point='envs.gym.gym_humanoid:HumanoidEnv',
+    max_episode_steps=1000,
+)
+register(
+    id="gym_slimhumanoid-v0",
+    entry_point='envs.gym.gym_slimhumanoid:HumanoidEnv',
+    max_episode_steps=1000,
+)
+register(
+    id="gym_nostopslimhumanoid-v0",
+    entry_point='envs.gym.gym_nostopslimhumanoid:HumanoidEnv',
+    max_episode_steps=1000,
+)
 
 env_name_to_gym_registry = {
     # first batch
@@ -188,4 +203,8 @@ env_name_to_gym_registry = {
     "gym_fswimmer": "gym_fswimmer-v0",
     "gym_fhopper": "gym_fhopper-v0",
     "gym_fwalker2d": "gym_fwalker2d-v0",
+
+    "gym_humanoid": "gym_humanoid-v0",
+    "gym_slimhumanoid": "gym_slimhumanoid-v0",
+    "gym_nostopslimhumanoid": "gym_nostopslimhumanoid-v0",
 }

@@ -7,9 +7,10 @@ import os
 import numpy as np
 from gym import utils
 from gym.envs.mujoco import mujoco_env
+from slbo.envs import BaseModelBasedEnv
 
 
-class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
+class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
 
     def __init__(self, frame_skip=4):
         self.prev_qpos = None
@@ -81,3 +82,18 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         return -reward
         """
         raise NotImplementedError
+
+    def verify(self):
+        pass
+
+    def mb_step(self, states, actions, next_states):
+        if getattr(self, 'action_space', None):
+            actions = np.clip(actions, self.action_space.low,
+                              self.action_space.high)
+        rewards = - self.cost_np_vec(states, actions, next_states)
+        height, ang = next_states[:, 0], next_states[:, 1]
+        done = np.logical_or(
+            np.logical_or(height >= 2.0, height <= 0.8),
+            np.abs(ang) >= 1.0
+        )
+        return rewards, done

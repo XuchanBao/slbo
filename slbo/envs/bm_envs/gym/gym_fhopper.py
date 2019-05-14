@@ -7,9 +7,10 @@ import os
 import numpy as np
 from gym import utils
 from gym.envs.mujoco import mujoco_env
+from slbo.envs import BaseModelBasedEnv
 
 
-class HopperEnv(mujoco_env.MujocoEnv, utils.EzPickle):
+class HopperEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
 
     def __init__(self, frame_skip=4):
         self.prev_qpos = None
@@ -77,3 +78,14 @@ class HopperEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         return -reward
         """
         raise NotImplementedError
+
+    def mb_step(self, states, actions, next_states):
+        # returns rewards and dones
+        # forward rewards are calculated based on states, instead of next_states as in original SLBO envs
+        if getattr(self, 'action_space', None):
+            actions = np.clip(actions, self.action_space.low,
+                              self.action_space.high)
+        rewards = - self.cost_np_vec(states, actions, next_states)
+        height, ang = next_states[:, 0], next_states[:, 1]
+        done = np.logical_or(height <= 0.7, abs(ang) >= 0.2)
+        return rewards, done

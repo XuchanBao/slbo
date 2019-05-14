@@ -1,5 +1,5 @@
 env:
-  id: FixedSwimmer
+  id: FixedHopper
 runner:
   max_steps: 1000
 plan:

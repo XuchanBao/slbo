@@ -64,3 +64,6 @@ class fixedSwimmerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 
     def cost_tf_vec(self, obs, acts, next_obs):
         raise NotImplementedError
+
+    def verify(self):
+        pass

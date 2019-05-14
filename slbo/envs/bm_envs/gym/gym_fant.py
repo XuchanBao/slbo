@@ -8,8 +8,10 @@ import numpy as np
 from gym import utils
 from gym.envs.mujoco import mujoco_env
 
+from slbo.envs import BaseModelBasedEnv
 
-class AntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
+
+class AntEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
 
     def __init__(self, frame_skip=5):
         self.prev_qpos = None
@@ -71,3 +73,12 @@ class AntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 
     def cost_tf_vec(self, obs, acts, next_obs):
         raise NotImplementedError
+
+    def mb_step(self, states, actions, next_states):
+        if getattr(self, 'action_space', None):
+            actions = np.clip(actions, self.action_space.low,
+                              self.action_space.high)
+        rewards = - self.cost_np_vec(states, actions, next_states)
+        height = next_states[:, 0]
+        done = np.logical_or((height > 1.0), (height < 0.2))
+        return rewards, done

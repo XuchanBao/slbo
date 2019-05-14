@@ -24,7 +24,7 @@ from slbo.algos.TRPO import TRPO
 def evaluate(settings, tag):
     for runner, policy, name in settings:
         runner.reset()
-        _, ep_infos = runner.run(policy, FLAGS.rollout.n_test_samples)
+        debug_info, ep_infos = runner.run(policy, FLAGS.rollout.n_test_samples)
         returns = np.array([ep_info['return'] for ep_info in ep_infos])
         logger.info('Tag = %s, Reward on %s (%d episodes): mean = %.6f, std = %.6f', tag, name,
                     len(returns), np.mean(returns), np.std(returns))

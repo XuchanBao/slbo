@@ -1,5 +1,5 @@
 env:
-  id: CartPole
+  id: PendulumO001
 runner:
   max_steps: 200
 plan:

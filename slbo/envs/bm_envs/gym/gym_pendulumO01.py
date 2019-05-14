@@ -121,6 +121,18 @@ class PendulumEnv(gym.Env):
         costs = y + .1 * x + .1 * (thetadot ** 2) + .001 * (u ** 2)
         return costs
 
+    def mb_step(self, states, actions, next_states):
+        # returns rewards and dones
+        # forward rewards are calculated based on states, instead of next_states as in original SLBO envs
+        if getattr(self, 'action_space', None):
+            actions = np.clip(actions, self.action_space.low,
+                              self.action_space.high)
+        rewards = - self.cost_np_vec(states, actions, next_states)
+        return rewards, np.zeros_like(rewards, dtype=np.bool)
+
+    def verify(self):
+        pass
+
 
 def angle_normalize(x):
     return (((x + np.pi) % (2 * np.pi)) - np.pi)
