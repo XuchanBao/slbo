@@ -39,7 +39,7 @@ class PendulumEnv(gym.Env):
         # for the reward
         y, x, thetadot = np.cos(th), np.sin(th), thdot
         u = np.clip(u, -self.max_torque, self.max_torque)[0]
-        costs = y + .1 * x + .1 * (thetadot ** 2) + .001 * (u ** 2)
+        costs = y + .1 * np.abs(x) + .1 * (thetadot ** 2) + .001 * (u ** 2)
         reward = -costs
 
         g = 10.
@@ -103,7 +103,7 @@ class PendulumEnv(gym.Env):
         # forward rewards are calculated based on states, instead of next_states as in original SLBO envs
         if getattr(self, 'action_space', None):
             actions = np.clip(actions, self.action_space.low,
-                             self.action_space.high)
+                              self.action_space.high)
         rewards = - self.cost_np_vec(states, actions, next_states)
         return rewards, np.zeros_like(rewards, dtype=np.bool)
 
@@ -127,7 +127,7 @@ class PendulumEnv(gym.Env):
         """
         y, x, thetadot = obs[:, 0], obs[:, 1], obs[:, 2]
         u = np.clip(acts[:, 0], -self.max_torque, self.max_torque)
-        costs = y + .1 * x + .1 * (thetadot ** 2) + .001 * (u ** 2)
+        costs = y + .1 * np.abs(x) + .1 * (thetadot ** 2) + .001 * (u ** 2)
         return costs
 
     def verify(self, n=2000, eps=1e-4):
