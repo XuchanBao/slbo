@@ -24,9 +24,11 @@ class HumanoidEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
         if getattr(self, 'action_space', None):
             action = np.clip(a, self.action_space.low,
                              self.action_space.high)
+        qpos = self.model.data.qpos
+        done = bool((qpos[2] < 1.0) or (qpos[2] > 2.0))
 
         # reward
-        alive_bonus = 5.0
+        alive_bonus = 5 * (1 - float(done))
         lin_vel_cost = 0.25 / 0.015 * data.qvel.flat[0]
         quad_ctrl_cost = 0.1 * np.square(action).sum()
         quad_impact_cost = 0.0

@@ -32,7 +32,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
         reward_ctrl = -0.1 * np.square(action).sum()
         reward_run = old_ob[8]
         reward_height = -3.0 * np.square(old_ob[0] - 1.3)
-        reward = reward_run + reward_ctrl + reward_height
+        reward = reward_run + reward_ctrl + reward_height + 1.0
 
         done = False
         return ob, reward, done, {}
@@ -48,7 +48,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
         # forward rewards are calculated based on states, instead of next_states as in original SLBO envs
         if getattr(self, 'action_space', None):
             actions = np.clip(actions, self.action_space.low,
-                             self.action_space.high)
+                              self.action_space.high)
         rewards = - self.cost_np_vec(states, actions, next_states)
         return rewards, np.zeros_like(rewards, dtype=np.bool)
 
@@ -70,7 +70,7 @@ class Walker2dEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
         reward_ctrl = -0.1 * np.sum(np.square(acts), axis=1)
         reward_run = obs[:, 8]
         reward_height = -3.0 * np.square(obs[:, 0] - 1.3)
-        reward = reward_run + reward_ctrl + reward_height
+        reward = reward_run + reward_ctrl + reward_height + 1.0
         return -reward
 
     def cost_tf_vec(self, obs, acts, next_obs):
