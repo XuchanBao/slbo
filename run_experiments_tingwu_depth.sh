@@ -4,7 +4,12 @@ env_length=$2
 
 for env_name in $1; do
     echo "=> Running environment ${env_name}"
-    for plan_length in 100 200 400 600 800 1000; do
+    for plan_length in 100 200 500 800 1000; do
+        if [ "$plan_length" -gt "$env_length" ]
+        then
+            continue      # Skip rest of this particular loop iteration.
+        fi
+
 
         # modify the config files
         file_name=configs/env_tingwu/${env_name}_depth_search_${env_length}_${plan_length}.yml
