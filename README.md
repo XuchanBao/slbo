@@ -1,9 +1,10 @@
 # Stochastic Lower Bound Optimization
 
-This is the TensorFlow implementation for the paper [
-Algorithmic Framework for Model-based Deep Reinforcement Learning with Theoretical Guarantees](https://arxiv.org/abs/1807.03858).
-A PyTorch version will be released later.  
+[Algorithmic Framework for Model-based Deep Reinforcement Learning with Theoretical Guarantees](https://arxiv.org/abs/1807.03858).
+We modified the repo to perform benchmarking as part of the [Model Based Reinforcement Learning Benchmarking Library (MBBL)](https://github.com/WilsonWangTHU/mbbl).
+Please refer to the project page for more information.
 
+This is the implementation built on top of the [official repo](https://github.com/facebookresearch/slbo) by the authors.
 
 ## Installation
 Requires [`mujoco131`](https://www.roboti.us/index.html).
@@ -12,8 +13,15 @@ Install required packages using:
 ```
 pip install -r requirements.txt
 ```
+Then please go to [MBBL](https://github.com/WilsonWangTHU/mbbl) to install the mbbl package for the environments.
 
 ## Run
+To do the benchmarking, please refer to `./example_script/run_experiments.sh`
+First copy the script under the root directory, i. e. `cp ./example_script/run_experiments.sh ./`
+Then run the benchmarking for example as
+```
+bash run_experiments.sh gym_cheetah
+```
 
 Before running, please make sure that `rllab` and `baselines` are available 
 
