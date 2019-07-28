@@ -32,7 +32,7 @@ class ReacherEnv(mujoco_env.MujocoEnv, utils.EzPickle, BaseModelBasedEnv):
         # forward rewards are calculated based on states, instead of next_states as in original SLBO envs
         if getattr(self, 'action_space', None):
             actions = np.clip(actions, self.action_space.low,
-                             self.action_space.high)
+                              self.action_space.high)
         rewards = - self.cost_np_vec(states, actions, next_states)
         return rewards, np.zeros_like(rewards, dtype=np.bool)
 

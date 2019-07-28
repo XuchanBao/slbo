@@ -165,6 +165,27 @@ register(
     entry_point='envs.gym.gym_nostopslimhumanoid:HumanoidEnv',
     max_episode_steps=1000,
 )
+register(
+    id='roboschool_reacher-v0',
+    entry_point='envs.gym.roboschool_reacher:RoboschoolReacher',
+    max_episode_steps=50,
+)
+register(
+    id='roboschool_cheetah-v0',
+    entry_point='envs.gym.roboschool_cheetah:RoboschoolHalfCheetah',
+    max_episode_steps=1000,
+)
+register(
+    id='roboschool_ant-v0',
+    entry_point='envs.gym.roboschool_cheetah:RoboschoolAnt',
+    max_episode_steps=1000,
+)
+register(
+    id='pybullet_reacher-v0',
+    entry_point='envs.gym.pybullet_reacher:RoboschoolReacher',
+    max_episode_steps=50,
+)
+
 
 env_name_to_gym_registry = {
     # first batch
@@ -174,6 +195,12 @@ env_name_to_gym_registry = {
     "hopper": "MBRLHopper-v0",
     "reacher": "MBRLReacher-v0",
     "walker2d": "MBRLWalker2d-v0",
+
+    # pybullet
+    "roboschool_reacher": "roboschool_reacher-v0",
+    "roboschool_cheetah": "roboschool_cheetah-v0",
+    "roboschool_ant": "roboschool_ant-v0",
+    "pybullet_reacher": "pybullet_reacher-v0",
 
     # second batch
     "invertedPendulum": "MBRLInvertedPendulum-v0",

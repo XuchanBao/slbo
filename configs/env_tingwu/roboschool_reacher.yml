@@ -1,0 +1,6 @@
+env:
+  id: RoboschoolReacher
+runner:
+  max_steps: 50
+plan:
+  max_steps: 50
